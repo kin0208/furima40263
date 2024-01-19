@@ -6,7 +6,7 @@
 | ------------------ | ---------- | -------------------------- |
 | nickname           | string     | null: false                |
 | email              | string     | null: false, unique: true  |
-| password           | string     | null: false                |
+| encrypted_password | string     | null: false                |
 | last_name          | string     | null: false                |
 | first_name         | string     | null: false                |
 | last_name_kana     | string     | null: false                |
@@ -14,9 +14,8 @@
 | birth_date         | date       | null: false                |
 
 ### Association
-- has_many :item
-- has_many :purchase
-- has_many :delivery
+- has_many :items
+- has_many :orders
 
 ## itemsテーブル
 
@@ -25,18 +24,17 @@
 | --------------- | ---------- | ----------------------------- |
 | name            | string     | null: false                   |
 | description     | text       | null: false                   |
-| category        | string     | null: false                   |
-| condition       | string     | null: false                   |
-| shipping_fee    | string     | null: false                   |
-| shipping_region | string     | null: false                   |
-| days_to_ship    | string     | null: false                   |
+| category_id     | integer    | null: false                   |
+| condition_id    | integer    | null: false                   |
+| fee_id          | integer    | null: false                   |
+| prefecture_id   | integer    | null: false                   |
+| days_id         | integer    | null: false                   |
 | price           | integer    | null: false                   |
 | user            | references | null: false, foreign_key: true|
 
 ### Association
 - belongs_to :user
-- has_one :purchase
-- has_one :delivery
+- has_one :order
 
 ## ordersテーブル
 
@@ -55,13 +53,11 @@
 | Column          | Type       | Options                    |
 | ----------------| ---------- | -------------------------- |
 | postal_code     | string     | null: false                | 
-| prefecture      | string     | null: false                | 
+| prefecture_id   | integer    | null: false                | 
 | city            | string     | null: false                | 
 | street_address  | string     | null: false                | 
 | building_name   | string     |                            | 
 | phone_number    | string     | null: false                | 
 
 ### Association
-- belongs_to :user
-- belongs_to :item
 - belongs_to :order
