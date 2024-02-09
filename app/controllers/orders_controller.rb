@@ -1,15 +1,14 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create]
   before_action :redirect_to_top_if_not_selling_or_sold, only: [:index]
+  before_action :set_item, only: [:index, :create]
 
   def index
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
-    @item = Item.find(params[:item_id])
     @order_delivery = OrderDelivery.new
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @order_delivery = OrderDelivery.new(order_params)
     if @order_delivery.valid?
       pay_item
@@ -37,13 +36,13 @@ class OrdersController < ApplicationController
   end
 
   def redirect_to_top_if_not_selling_or_sold
-    if user_signed_in?
-      item = Item.find(params[:item_id])
-      if current_user == item.user || item.sold_out?
-        redirect_to root_path
-      end
-    else
-      redirect_to new_user_session_path
+    item = Item.find(params[:item_id])
+    if current_user == item.user || item.sold_out?
+      redirect_to root_path
     end
+  end
+
+  def set_item
+    @item = Item.find(params[:item_id])
   end
 end
