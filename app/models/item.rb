@@ -20,4 +20,8 @@ class Item < ApplicationRecord
   validates :price,            numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999, only_integer: true}, presence: true
   validates :image,            presence: true
 
+  def sold_out?
+    Order.exists?(item_id: id)
+  end
+
 end
