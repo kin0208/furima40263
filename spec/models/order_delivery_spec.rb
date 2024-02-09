@@ -72,6 +72,12 @@ RSpec.describe OrderDelivery, type: :model do
         @order_delivery.valid?
         expect(@order_delivery.errors.full_messages).to include("Phone number is too short")
       end
+
+      it 'tokenが空では登録できない' do
+        @order_delivery.token = nil
+        @order_delivery.valid?
+        expect(@order_delivery.errors.full_messages).to include("Token can't be blank")
+      end
     end
   end
 end
